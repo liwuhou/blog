@@ -10,7 +10,7 @@ summary: 一些html5中的新api和特性
 
 #### Video/Audio-API
 **video对象的方法**
-
+ 
 | 方法名 | 效果 |
 | --- | --- |
 | load() | 加载其他视频（如果有的话） |
