@@ -4,10 +4,9 @@ date: 2018-04-05
 tags: Html
 summary: 一些html5中的新api和特性
 ---
-# html5 的应用
-简述API
-API(Application Programming Interface)
-是一些预先定义的函数，目的是提供应用程序与开发人员基于某软件或硬件得以访问一组例程的能力，而又无需访问源码，或理解内部工作机制的细节。
+> 简述API
+> API(Application Programming Interface)
+> 是一些预先定义的函数，目的是提供应用程序与开发人员基于某软件或硬件得以访问一组例程的能力，而又无需访问源码，或理解内部工作机制的细节。
 
 #### Video/Audio-API
 **video对象的方法**
