@@ -11,8 +11,7 @@ summary: reduce是个功能很强大，也很有意思的数组方法。以前�
 
 webpack本质上是一个打包工具，它会根据代码的内容解析模块依赖，帮助我们把多个模块的代码打包。借用webpack官网的图片。
 
-![webpack](https://user-gold-cdn.xitu.io/2018/3/19/1623bfac4a1e0945?imageView2/0/w/1280/h/960/format/webp/ignore-error/1)
-
+![webpack](https://blogs-1257826393.cos.ap-shenzhen-fsi.myqcloud.com/20200208005857.png)
 
 
 ### 入口
