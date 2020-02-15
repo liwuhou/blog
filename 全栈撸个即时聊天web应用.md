@@ -18,7 +18,7 @@ summary: 使用React+Koa2+MongoDB实现一个即时聊天的web应用
 ## 前端部分
 我使用的是`create-react-app`脚手架来搭建项目
 
-#### 搭建项目
+### 搭建项目
 
 ```shell
 # 如果没安装脚手架的就全局装下
@@ -74,7 +74,7 @@ yarn add node-sass sass
 yarn add socket.io-client
 ```
 
-#### 修改webpack配置
+### 修改webpack配置
 
 并且由于后续需要改一些`webpack`的配置，这里需要`yarn eject`一下，把`webpack`的配置都暴露出来
 
@@ -97,7 +97,7 @@ p.s. 对`webpack`不太了解的，可以先去看看我之前做的`webpack`配
 }
 ```
 
-#### 适配移动端
+### 适配移动端
 
 项目里我使用的是`rem`布局，在css中`em`是相对于父节点的`font-size`来参照大小的，而`rem`呢，就是参照root节点，在浏览器中，这个根节点就是`html`标签。所以我们通过获取用户的屏幕尺寸，通过一定比例来改变页面中`html`标签的`font-size`属性，这样所有使用了`rem`单位的属性，就能实现不同屏幕尺寸的适配。
 

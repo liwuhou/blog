@@ -163,7 +163,7 @@ ReactDOM.render(foo, document.querySelector('#root'));
 
 
 ### jsx中的特定属性
-因为html中是对大小写不敏感的，而本质上是js的jsx对大小写敏感而且分隔短线(`-`)会跟运算符减号(`-`)混淆，所以严格要求使用小驼峰输入，例如控制元素被键盘聚焦的`tabindex`属性，在jsx中就必须写为`tabIndex`
+因为html中是对大小写不敏感的，而本质上是js的jsx对大小写敏感而且分隔短线(`-`)会跟运算符减号(`-`)混淆，所以严格要求使用大驼峰输入，例如控制元素被键盘聚焦的`tabindex`属性，在jsx中就必须写为`tabIndex`
 
 ```jsx
 <div tabIndex="1"></div>
