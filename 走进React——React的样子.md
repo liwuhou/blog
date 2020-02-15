@@ -7,6 +7,8 @@ tags:
 summary: React是一个可以快速构建响应式界面的UI库，基于组件化开发，可以让你的数据与界面很大程度的解耦，让你能只专注于数据，而不用去操心界面的展示。
 ---
 
+# 走进React——React的样子
+
 `React`是一个可以快速构建响应式界面的**UI**库，基于组件化开发，可以让你的数据与界面很大程度的解耦，让你能只专注于数据，而不用去操心界面的展示。同时他也可以通过不同的渲染器来渲染你的react范式的代码，譬如`react-native`，他可以让用"react范式"写出原生应用，运行在各种移动设备中。
 
 ### react的样子
@@ -160,3 +162,7 @@ class Test extends Component{
 
 
 > 每次花个十分钟，懂一个React知识点，走得虽慢，只要坚持走下去，足以致千里。
+
+关注本人公众号
+
+![](https://blogs-1257826393.cos.ap-shenzhen-fsi.myqcloud.com/qrcode_for_gh_373ae200ef34_344.jpg)

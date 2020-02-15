@@ -7,6 +7,8 @@ tags:
 summary: 用React开发时，最具标识性的，估计就是jsx语法了。它并不是HTML，也不是字符串，官方称之为——一个javascript的语法拓展。
 ---
 
+# 走进React——jsx
+
 用React开发时，最具标识性的，估计就是jsx语法了。它并不是HTML，也不是字符串，官方称之为——一个javascript的语法拓展。在用react开发中，个人感觉jsx能极大地提升开发者的开发体验。在传统的开发中，都提倡将视图与逻辑文件分离，而React则是通过一个称之为“组件”的东东来存放视图和逻辑，将业务拆分为一个个的小模块，更多组件的概念在后续的文章中也会放出来跟大家探讨。
 
 ### 开始前先说几句
@@ -289,3 +291,6 @@ export default class ShowList extends Component{
 
 > 每次花个十分钟，懂一个前端知识点，走得慢，但坚持走下去，足以致千里。
 
+关注本人公众号
+
+![](https://blogs-1257826393.cos.ap-shenzhen-fsi.myqcloud.com/qrcode_for_gh_373ae200ef34_344.jpg)

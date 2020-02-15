@@ -5,6 +5,9 @@ tags: Css
 summary: 几种开发中，常见的css布局的笔记
 ---
 
+# css的几种布局手记
+总结了几种css布局的方法
+
 ## 三列布局
 中间一列永恒居中且高度自适应效果，如图
 ![三列布局](https://blogs-1257826393.cos.ap-shenzhen-fsi.myqcloud.com/15281227413351.jpg)
@@ -131,4 +134,6 @@ summary: 几种开发中，常见的css布局的笔记
 </div>
 ```
 
+关注本人公众号
 
+![](https://blogs-1257826393.cos.ap-shenzhen-fsi.myqcloud.com/qrcode_for_gh_373ae200ef34_344.jpg)

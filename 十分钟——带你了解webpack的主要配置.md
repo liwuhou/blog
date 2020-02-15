@@ -7,6 +7,9 @@ tags:
     - TenMinutes
 summary: reduce是个功能很强大，也很有意思的数组方法。以前没深入学习的时候，只是让他来做做累加，处理一些简单数据的合计功能。当我深入挖掘的时候才发现他可以做的东西还有很多，比如拼接字符串、拼接数组、过滤和映射数组、整合对象等骚操作。
 ---
+
+# 十分钟——带你了解webpack的主要配置
+
 ### 简单说几句
 
 webpack本质上是一个打包工具，它会根据代码的内容解析模块依赖，帮助我们把多个模块的代码打包。借用webpack官网的图片。
@@ -320,3 +323,7 @@ module.exports = smart(base, {
 webpack-merge还有其他api可以用于自定义合并行为，这里就不详细介绍了，可以查阅[官方文档](https://github.com/survivejs/webpack-merge) 
 
 > 每次花个十分钟，懂一个前端知识点，走得虽慢，但坚持走下去，足以致千里。
+
+关注本人公众号
+
+![](https://blogs-1257826393.cos.ap-shenzhen-fsi.myqcloud.com/qrcode_for_gh_373ae200ef34_344.jpg)

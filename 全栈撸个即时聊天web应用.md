@@ -8,6 +8,8 @@ tags:
 summary: 使用React+Koa2+MongoDB实现一个即时聊天的web应用
 ---
 
+# Koa2+MongoDB+React撸个即时聊天web应用
+
 学习了`Koa2`和`MongoDB`之后，突然就想着撸个实战项目出来看看，想来想去，还是搞个即时聊天应用出来玩玩吧。
 
 > 项目的所有源码已经放到[Github](https://github.com/hugewilliam/chat_room/tree/simple_chat)
@@ -104,3 +106,11 @@ p.s. 对`webpack`不太了解的，可以先去看看我之前做的`webpack`配
 具体源码我放在`src/utils/fit2rem.js`文件中，我就不赘述了。
 然后在`src/index.js`中引入
 
+
+
+
+
+
+关注本人公众号
+
+![](https://blogs-1257826393.cos.ap-shenzhen-fsi.myqcloud.com/qrcode_for_gh_373ae200ef34_344.jpg)
