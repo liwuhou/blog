@@ -34,36 +34,30 @@ npm install -g create-react-app
 npm init react-app chat
 ```
 
-然后先将src目录改为如下结构：
+完事后进入`chat`目录就可以看到以下的结构
 
 ```shell
-src/
-├── index.js
-├── index.scss # 全局css样式
-├── App.jsx 
-├── components # 组件目录
-├── setupProxy.js # 可以配置一些代理服务
-├── api # 存放api接口配置
+.
+├── README.md
+├── package.json
+├── public
+│   ├── favicon.ico
+│   ├── index.html
+│   ├── logo192.png
+│   ├── logo512.png
+│   ├── manifest.json
+│   └── robots.txt
+├── src
+│   ├── App.css
+│   ├── App.js
+│   ├── App.test.js
+│   ├── index.css
 │   ├── index.js
-│   └── serverApi.js
-├── axios # 简单封装下axios
-│   └── index.js
-├── css # 存放全局的css样式或者方法
-│   ├── common.scss
-│   ├── index.scss
-│   └── normalize.css
-├── router # 路由配置
-│   └── index.js
-├── utils # 可能用到的一些工具函数
-│   ├── fit2rem.js
-│   └── index.js
-└── views # 页面文件
-    ├── Chat
-    │   ├── index.jsx
-    │   └── index.scss
-    └── Login
-        ├── index.jsx
-        └── index.scss
+│   ├── logo.svg
+│   ├── serviceWorker.js
+│   └── setupTests.js
+├── yarn-error.log
+└── yarn.lock
 ```
 
 安装项目中用到的依赖
@@ -87,7 +81,7 @@ yarn eject
 执行之后发现多了个`config`和`scripts`目录，并且`package`也多了很多内容。详细的可以自行了解`create-react-app`里的`yarn eject`作用，我们先去改下`config`目录下的`webpack.config.js`配置。
 p.s. 对`webpack`不太了解的，可以先去看看我之前做的`webpack`配置的这篇文章——十分钟——[带你了解webpack的主要配置](https://liwuhou.cn/2020/01/07/%E5%8D%81%E5%88%86%E9%92%9F%E2%80%94%E2%80%94%E5%B8%A6%E4%BD%A0%E4%BA%86%E8%A7%A3webpack%E7%9A%84%E4%B8%BB%E8%A6%81%E9%85%8D%E7%BD%AE/)
 
-```js {7,8}
+```js {6,7}
 {
     // ... 其他配置
     alias: {
@@ -106,11 +100,21 @@ p.s. 对`webpack`不太了解的，可以先去看看我之前做的`webpack`配
 具体源码我放在`src/utils/fit2rem.js`文件中，我就不赘述了。
 然后在`src/index.js`中引入
 
+### 引入全局样式
+
+虽然在React项目中，在组件js文件中引入的样式就是全局的，但是为了增加仪式感，同时也是让以后方便管理和定位问题，还是让我们在`index.js`中引入`css/index.scss`和`normalize.css`。
+
+> normalize.css 是一个有别于传统reset.css的样式重置文件，相比之下，reset.css有时候显得太过暴力了，会造成一些不必要的性能损耗，而normalize.css就温柔多了...
+
+挂载最外层的App组件到index.js
+
+```jsx {2}
+ReactDOM.render(
+    <App/>,
+    document.getElementById('root')
+);
+```
 
 
 
 
-
-关注本人公众号
-
-![](https://blogs-1257826393.cos.ap-shenzhen-fsi.myqcloud.com/qrcode_for_gh_373ae200ef34_344.jpg)
