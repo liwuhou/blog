@@ -40,6 +40,7 @@ npm init react-app chat
 .
 ├── README.md
 ├── package.json
+├── node_modules/...
 ├── public
 │   ├── favicon.ico
 │   ├── index.html
@@ -60,7 +61,60 @@ npm init react-app chat
 └── yarn.lock
 ```
 
-安装项目中用到的依赖
+然后就是将脚手架生成的多余的文件给删掉，使目录结构变成这样
+
+```shell
+.
+├── package.json
+├── node_modules/...
+├── public
+│   ├── favicon.ico
+│   ├── index.html
+│   └── robots.txt
+├── README.md
+├── src
+│   ├── App.jsx
+│   └── index.js
+└── yarn.lock
+
+```
+将src下的`app.js`改为`app.jsx`(这样看起来更酷不是吗？)，然后对文件内容进行一些更改。
+```jsx {4, 6}
+import React from 'react';
+
+function App() {
+    // 这些先输出hello world更编程世界打个招呼
+    return (
+        <h1>hello world</h1>
+    );
+}
+
+export default App;
+```
+
+将index.js文件也修改下
+
+```js
+import React from 'react';
+import ReactDOM from 'react-dom';
+import App from './App';
+
+ReactDOM.render(
+    <App/>,
+    document.querySelector('#root')
+)
+```
+
+这一步骤的源代码可以在git仓库里面的`init`分支上查看，
+
+```shell
+# 项目仓库中，切换到init分支可以查看上述目录及代码
+$ git checkout init
+```
+
+### 配置好路由及代理
+
+首先安装项目中用到的依赖
 
 ```shell
 yarn add react-router-dom axios 
@@ -75,6 +129,7 @@ yarn add socket.io-client
 并且由于后续需要改一些`webpack`的配置，这里需要`yarn eject`一下，把`webpack`的配置都暴露出来
 
 ```shell
+
 yarn eject
 ```
 
