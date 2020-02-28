@@ -12,8 +12,8 @@ summary: 使用React+Koa2+MongoDB实现一个即时聊天的web应用
 
 学习了`Koa2`和`MongoDB`之后，突然就想着撸个实战项目出来看看，想来想去，还是搞个即时聊天应用出来玩玩吧。
 
-> 项目的所有源码已经放到[Github](https://github.com/hugewilliam/chat_room/tree/simple_chat)
-> 我也把最终的效果放到线上服务器了[摸鱼俱乐部聊天室](https://liwuhou.cn/chat)
+项目的所有源码已经放到[Github](https://github.com/hugewilliam/chat_room/tree/simple_chat)
+我也把最终的效果放到线上服务器了[摸鱼俱乐部聊天室](https://liwuhou.cn/chat)
 
 前端部分我使用了`React`来搭建界面，工作用的都是`Vue`，感觉再不用用`React`就要生疏了……
 
@@ -22,16 +22,18 @@ summary: 使用React+Koa2+MongoDB实现一个即时聊天的web应用
 
 ### 搭建项目
 
+用脚手架生成一个`chat`项目
+
 ```shell
 # 如果没安装脚手架的就全局装下
-yarn add global create-react-app
+$ yarn add global create-react-app
 
 # 创建项目
-yarn create react-app chat && cd chat
+$ yarn create react-app chat && cd chat
 
 # 当然也可以用npm
-npm install -g create-react-app
-npm init react-app chat
+$ npm install -g create-react-app
+$ npm init react-app chat
 ```
 
 完事后进入`chat`目录就可以看到以下的结构
@@ -83,7 +85,7 @@ npm init react-app chat
 import React from 'react';
 
 function App() {
-    // 这些先输出hello world更编程世界打个招呼
+    // 这里先输出hello world跟编程世界打个招呼
     return (
         <h1>hello world</h1>
     );
@@ -105,24 +107,72 @@ ReactDOM.render(
 )
 ```
 
-这一步骤的源代码可以在git仓库里面的`init`分支上查看，
+**这一部分的源代码可以在git仓库里面的`init`分支上查看。**
+
+
+### 配置路由及封装axios
+
+这个demo中，我路由管理用的是`react-router-dom`，异步请求使用的是`axios`库。
+话不多说，先安装相关依赖
 
 ```shell
-# 项目仓库中，切换到init分支可以查看上述目录及代码
-$ git checkout init
+
+$ yarn add react-router-dom axios 
+
 ```
 
-### 配置好路由及代理
+#### 编写路由配置
 
-首先安装项目中用到的依赖
+由于这里只是一个很简单的小demo，所以路由并不多。其实也就两个，一个是初始进入时的注册和登录页(`/login`)，还有就是聊天界面(`/chat`)。
+在`src`目录新建一个`router`目录，并在目录下放新建`index.js`文件，现在我们来编写应用里可能会用到的路由跳转。
+大概撸出来，是这样的
 
-```shell
-yarn add react-router-dom axios 
-# 这里我用的是sass所以还需要再安装下`ass的依赖到项目里
-yarn add node-sass sass
-# 我用了socket.io 实现跟服务器的websocket接口的对接，所以装下socket.io-client
-yarn add socket.io-client
+```jsx
+
+import React from 'react';
+import {Route, Switch} from 'react-router-dom';
+// 这里的页面组件还没有编辑，先占下位置
+import Login from '../views/Login';
+import Chat from '../views/Chat';
+
+export default class Router extends React.Component{
+    render(){
+        return (
+            <Switch>
+                {/* 登录/注册 */}
+                <Route exact path="/login" component={Login}/>
+                {/* 聊天界面 */}
+                <Route exact path="/chat" component={Chat}/>
+            </Switch>
+        )
+    }
+}
+
 ```
+
+接着在`src`下新建`views`文件夹，往`Login`和`Chat`里随便写点东西。
+最后往`App.jsx`中引入`Router`
+
+```jsx {9, 10, 11}
+
+// App.jsx
+import React from 'react';
+import {HashRouter} from 'react-router-dom';
+import Router from './router';
+
+export default function App(){
+    return (
+        <HashRouter>
+            <Router/>
+        </HashRouter>
+    );
+}
+
+```
+
+现在在浏览器中输入`localhost:3000/#/login`和`localhost:3000/#/chat`可以访问相应的组件了。
+**这一部分的源代码可以在git仓库里面的`1-1`分支上查看。**
+
 
 ### 修改webpack配置
 
@@ -130,7 +180,8 @@ yarn add socket.io-client
 
 ```shell
 
-yarn eject
+$ yarn eject
+
 ```
 
 执行之后发现多了个`config`和`scripts`目录，并且`package`也多了很多内容。详细的可以自行了解`create-react-app`里的`yarn eject`作用，我们先去改下`config`目录下的`webpack.config.js`配置。
