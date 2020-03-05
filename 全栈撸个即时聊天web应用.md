@@ -8,6 +8,8 @@ tags:
 summary: 使用React+Koa2+MongoDB实现一个即时聊天的web应用
 ---
 
+# Koa2+MongoDB+React撸个即时聊天web应用
+
 学习了`Koa2`和`MongoDB`之后，突然就想着撸个实战项目出来看看，想来想去，还是搞个即时聊天应用出来玩玩吧。
 
 > 项目的所有源码已经放到[Github](https://github.com/hugewilliam/chat_room/tree/simple_chat)
@@ -18,7 +20,7 @@ summary: 使用React+Koa2+MongoDB实现一个即时聊天的web应用
 ## 前端部分
 我使用的是`create-react-app`脚手架来搭建项目
 
-#### 搭建项目
+### 搭建项目
 
 ```shell
 # 如果没安装脚手架的就全局装下
@@ -32,39 +34,87 @@ npm install -g create-react-app
 npm init react-app chat
 ```
 
-然后先将src目录改为如下结构：
+完事后进入`chat`目录就可以看到以下的结构
 
 ```shell
-src/
-├── index.js
-├── index.scss # 全局css样式
-├── App.jsx 
-├── components # 组件目录
-├── setupProxy.js # 可以配置一些代理服务
-├── api # 存放api接口配置
+.
+├── README.md
+├── package.json
+├── node_modules/...
+├── public
+│   ├── favicon.ico
+│   ├── index.html
+│   ├── logo192.png
+│   ├── logo512.png
+│   ├── manifest.json
+│   └── robots.txt
+├── src
+│   ├── App.css
+│   ├── App.js
+│   ├── App.test.js
+│   ├── index.css
 │   ├── index.js
-│   └── serverApi.js
-├── axios # 简单封装下axios
-│   └── index.js
-├── css # 存放全局的css样式或者方法
-│   ├── common.scss
-│   ├── index.scss
-│   └── normalize.css
-├── router # 路由配置
-│   └── index.js
-├── utils # 可能用到的一些工具函数
-│   ├── fit2rem.js
-│   └── index.js
-└── views # 页面文件
-    ├── Chat
-    │   ├── index.jsx
-    │   └── index.scss
-    └── Login
-        ├── index.jsx
-        └── index.scss
+│   ├── logo.svg
+│   ├── serviceWorker.js
+│   └── setupTests.js
+├── yarn-error.log
+└── yarn.lock
 ```
 
-安装项目中用到的依赖
+然后就是将脚手架生成的多余的文件给删掉，使目录结构变成这样
+
+```shell
+.
+├── package.json
+├── node_modules/...
+├── public
+│   ├── favicon.ico
+│   ├── index.html
+│   └── robots.txt
+├── README.md
+├── src
+│   ├── App.jsx
+│   └── index.js
+└── yarn.lock
+
+```
+将src下的`app.js`改为`app.jsx`(这样看起来更酷不是吗？)，然后对文件内容进行一些更改。
+```jsx {4, 6}
+import React from 'react';
+
+function App() {
+    // 这些先输出hello world更编程世界打个招呼
+    return (
+        <h1>hello world</h1>
+    );
+}
+
+export default App;
+```
+
+将index.js文件也修改下
+
+```js
+import React from 'react';
+import ReactDOM from 'react-dom';
+import App from './App';
+
+ReactDOM.render(
+    <App/>,
+    document.querySelector('#root')
+)
+```
+
+这一步骤的源代码可以在git仓库里面的`init`分支上查看，
+
+```shell
+# 项目仓库中，切换到init分支可以查看上述目录及代码
+$ git checkout init
+```
+
+### 配置好路由及代理
+
+首先安装项目中用到的依赖
 
 ```shell
 yarn add react-router-dom axios 
@@ -74,18 +124,19 @@ yarn add node-sass sass
 yarn add socket.io-client
 ```
 
-#### 修改webpack配置
+### 修改webpack配置
 
 并且由于后续需要改一些`webpack`的配置，这里需要`yarn eject`一下，把`webpack`的配置都暴露出来
 
 ```shell
+
 yarn eject
 ```
 
 执行之后发现多了个`config`和`scripts`目录，并且`package`也多了很多内容。详细的可以自行了解`create-react-app`里的`yarn eject`作用，我们先去改下`config`目录下的`webpack.config.js`配置。
 p.s. 对`webpack`不太了解的，可以先去看看我之前做的`webpack`配置的这篇文章——十分钟——[带你了解webpack的主要配置](https://liwuhou.cn/2020/01/07/%E5%8D%81%E5%88%86%E9%92%9F%E2%80%94%E2%80%94%E5%B8%A6%E4%BD%A0%E4%BA%86%E8%A7%A3webpack%E7%9A%84%E4%B8%BB%E8%A6%81%E9%85%8D%E7%BD%AE/)
 
-```js {7,8}
+```js {6,7}
 {
     // ... 其他配置
     alias: {
@@ -97,10 +148,28 @@ p.s. 对`webpack`不太了解的，可以先去看看我之前做的`webpack`配
 }
 ```
 
-#### 适配移动端
+### 适配移动端
 
 项目里我使用的是`rem`布局，在css中`em`是相对于父节点的`font-size`来参照大小的，而`rem`呢，就是参照root节点，在浏览器中，这个根节点就是`html`标签。所以我们通过获取用户的屏幕尺寸，通过一定比例来改变页面中`html`标签的`font-size`属性，这样所有使用了`rem`单位的属性，就能实现不同屏幕尺寸的适配。
 
 具体源码我放在`src/utils/fit2rem.js`文件中，我就不赘述了。
 然后在`src/index.js`中引入
+
+### 引入全局样式
+
+虽然在React项目中，在组件js文件中引入的样式就是全局的，但是为了增加仪式感，同时也是让以后方便管理和定位问题，还是让我们在`index.js`中引入`css/index.scss`和`normalize.css`。
+
+> normalize.css 是一个有别于传统reset.css的样式重置文件，相比之下，reset.css有时候显得太过暴力了，会造成一些不必要的性能损耗，而normalize.css就温柔多了...
+
+挂载最外层的App组件到index.js
+
+```jsx {2}
+ReactDOM.render(
+    <App/>,
+    document.getElementById('root')
+);
+```
+
+
+
 

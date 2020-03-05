@@ -7,6 +7,8 @@ tags:
 summary: 用React开发时，最具标识性的，估计就是jsx语法了。它并不是HTML，也不是字符串，官方称之为——一个javascript的语法拓展。
 ---
 
+# 走进React——jsx
+
 用React开发时，最具标识性的，估计就是jsx语法了。它并不是HTML，也不是字符串，官方称之为——一个javascript的语法拓展。在用react开发中，个人感觉jsx能极大地提升开发者的开发体验。在传统的开发中，都提倡将视图与逻辑文件分离，而React则是通过一个称之为“组件”的东东来存放视图和逻辑，将业务拆分为一个个的小模块，更多组件的概念在后续的文章中也会放出来跟大家探讨。
 
 ### 开始前先说几句
@@ -106,7 +108,7 @@ const app = (
 ReactDOM.render(foo, document.querySelector('#root'));
 
 ```
-<img src="https://raw.githubusercontent.com/hugewilliam/blog_imgs/master/20190815151128.png"/>
+![](https://blogs-1257826393.cos.ap-shenzhen-fsi.myqcloud.com/20200215104921.png)
 
 当传入的值为字符串时，直接用引号括起来传入，当涉及到js变量或者表达式的时候，就用花括号(`{}`)包裹起来。这里还有一些特殊的，如果是一个对象的话，就多嵌套一层花括号，这其实也很好理解，因为你传入了一个对象嘛，更改一个元素的style也是同理的：
 
@@ -163,7 +165,7 @@ ReactDOM.render(foo, document.querySelector('#root'));
 
 
 ### jsx中的特定属性
-因为html中是对大小写不敏感的，而本质上是js的jsx对大小写敏感而且分隔短线(`-`)会跟运算符减号(`-`)混淆，所以严格要求使用小驼峰输入，例如控制元素被键盘聚焦的`tabindex`属性，在jsx中就必须写为`tabIndex`
+因为html中是对大小写不敏感的，而本质上是js的jsx对大小写敏感而且分隔短线(`-`)会跟运算符减号(`-`)混淆，所以严格要求使用大驼峰输入，例如控制元素被键盘聚焦的`tabindex`属性，在jsx中就必须写为`tabIndex`
 
 ```jsx
 <div tabIndex="1"></div>
@@ -180,7 +182,8 @@ ReactDOM.render(foo, document.querySelector('#root'));
     <label htmlFor="name">用户条例</label>
 </div>
 ```
-<img src="https://raw.githubusercontent.com/hugewilliam/blog_imgs/master/20190815151219.png"/>
+
+![](https://blogs-1257826393.cos.ap-shenzhen-fsi.myqcloud.com/20200215105211.png)
 
 还有监听各种事件，这里需要使用'on' + 小驼峰的事件名来监听时间
 
@@ -283,7 +286,11 @@ export default class ShowList extends Component{
 
 ### 最后说几句
 昨天发了一篇文章，被我老妹实力嘲讽（手动捂脸），真的以后要多更新下了，为了自己巩固巩固下所学的东西也是好的。
+
 ![](https://blogs-1257826393.cos.ap-shenzhen-fsi.myqcloud.com/20200208001057.png)
 
 > 每次花个十分钟，懂一个前端知识点，走得慢，但坚持走下去，足以致千里。
 
+关注本人公众号
+
+![](https://blogs-1257826393.cos.ap-shenzhen-fsi.myqcloud.com/qrcode_for_gh_373ae200ef34_344.jpg)

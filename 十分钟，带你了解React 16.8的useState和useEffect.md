@@ -8,6 +8,8 @@ tags:
 summary: Hooks是React 16.8新增的特性，并且他是向后兼容的，facebook也坦言没有计划会在React中移除class组件。你完全可以不使用hooks，一直使用class组件。
 ---
 
+# 十分钟，带你了解React 16.8的useState和useEffect
+
 `Hooks`是**React 16.8**新增的特性，并且他是向后兼容的，**facebook**也坦言没有计划会在**React**中移除class组件。你完全可以不使用`hooks`，一直使用class组件。
 
 ### 概念
@@ -254,3 +256,6 @@ ReactDom.render(
 
 > 每次花个十分钟，懂一个React知识点，走得虽慢，只要坚持走下去，足以致千里。
 
+关注本人公众号
+
+![](https://blogs-1257826393.cos.ap-shenzhen-fsi.myqcloud.com/qrcode_for_gh_373ae200ef34_344.jpg)

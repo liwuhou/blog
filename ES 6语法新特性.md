@@ -5,6 +5,8 @@ tags: Javascript
 summary: ES6的一些语法笔记
 ---
 
+# ES6语法的新特性
+
 #### let和const
 **let**和**const**将变量的的作用域限制在块中，可以避免因在执行JavaScript代码前，变量被提升所带来的问题。
 > let在同一作用域中只能声明一次，但可以重复赋值
@@ -218,3 +220,6 @@ function sum(...nums){
 }
 ```
 
+关注本人公众号
+
+![](https://blogs-1257826393.cos.ap-shenzhen-fsi.myqcloud.com/qrcode_for_gh_373ae200ef34_344.jpg)

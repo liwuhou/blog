@@ -4,6 +4,9 @@ date: 2018-04-05
 tags: Html
 summary: 一些html5中的新api和特性
 ---
+
+# html5的新特性
+
 > 简述API
 > API(Application Programming Interface)
 > 是一些预先定义的函数，目的是提供应用程序与开发人员基于某软件或硬件得以访问一组例程的能力，而又无需访问源码，或理解内部工作机制的细节。
@@ -162,3 +165,6 @@ context.stroke();
 ![](https://blogs-1257826393.cos.ap-shenzhen-fsi.myqcloud.com/15237219497132.jpg)
 
 
+关注本人公众号
+
+![](https://blogs-1257826393.cos.ap-shenzhen-fsi.myqcloud.com/qrcode_for_gh_373ae200ef34_344.jpg)
