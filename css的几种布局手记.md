@@ -136,4 +136,4 @@ summary: 几种开发中，常见的css布局的笔记
 
 关注本人公众号
 
-![](https://blogs-1257826393.cos.ap-shenzhen-fsi.myqcloud.com/qrcode_for_gh_373ae200ef34_344.jpg)
+![](http://cdn.liwuhou.cn/blog/20200306223709.png)

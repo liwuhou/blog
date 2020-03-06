@@ -93,7 +93,7 @@ ReactDOM.render(
 ```
 界面如下：
 
-![](https://blogs-1257826393.cos.ap-shenzhen-fsi.myqcloud.com/Snipaste_2019-08-10_11-52-10.png)
+![](http://cdn.liwuhou.cn/blog/20200306224259.png)
 
 ### 事件监听
 同样的`jsx`支持监听事件，及使用回调函数，需要注意的是：React事件的命名采用销驼峰形式，而不是像html一样使用纯小写，使用jsx语法时，需要传入一个函数作为时间处理函数，而不是一个字符串
@@ -165,4 +165,4 @@ class Test extends Component{
 
 关注本人公众号
 
-![](https://blogs-1257826393.cos.ap-shenzhen-fsi.myqcloud.com/qrcode_for_gh_373ae200ef34_344.jpg)
+![](http://cdn.liwuhou.cn/blog/20200306223709.png)
