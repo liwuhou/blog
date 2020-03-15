@@ -196,14 +196,14 @@ function FriendStatus(props) {
 ```
 这里有三个需要注意的地方，第一点在组件挂载的时候，仅会执行⑴处代码，而不会执行⑵处的回调函数；第二点，在组件`props`改变的时候，也就是发生类似class组件中的`componentDidUpdate`的时候，⑵的回调函数会比⑴早一步执行；第三点，组件卸载的时候，也就是等同于class中的`componentWillUnmound`的时候，`useEffect`只会调用⑵的回调函数而不会调用⑴处的代码。
 
-另外`useEffect`可以传递一个`state`变量进去，表示组件卸载的时候解绑.
+另外`useEffect`的第二个可以传递一个数组进去，表示数组中的state变量发生变化时才调用⑵的函数.
 ```jsx
 function Test(){
 	const [count, setCount] = useState(0);
 
 	useEffect(() => {
 		document.title = `You clicked ${count} times`;
-	}, count); // Mark: 传递count解绑
+	}, [count]); // Mark: 传递count解绑
 
     // rest code...
 }
