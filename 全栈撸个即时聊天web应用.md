@@ -18,6 +18,7 @@ summary: 使用React+Koa2+MongoDB实现一个即时聊天的web应用
 前端部分我使用了`React`来搭建界面，工作用的都是`Vue`，感觉再不用用`React`就要生疏了……
 
 ## 前端部分
+
 我使用的是`create-react-app`脚手架来搭建项目
 
 ### 搭建项目
@@ -217,7 +218,22 @@ import Chat from '@/views/Chat';
 项目里我使用的是`rem`布局，在css中`em`是相对于父节点的`font-size`来参照大小的，而`rem`呢，就是参照`root`(根)节点，在浏览器中，这个根节点就是`html`标签。所以我们通过**获取用户的屏幕尺寸，通过一定比例来改变页面中`html`标签的`font-size`属性**，这样所有使用了`rem`单位的属性，就能响应式的完成不同屏幕尺寸的适配。
 
 > 具体源码我放在`src/utils/fit2rem.js`文件中，原理我就不赘述了，感兴趣的朋友可以阅读源码+百度谷歌。
-最后在`src/index.js`中引入
+在`src/index.js`中引入
+由于我习惯性以`750px`的设计稿做参照，这里`px`转化为`rem`都要除以75倍，这里就可以在`common.scss`封装一个简易的计算方法
+
+```scss
+//px2rem
+@function rem($size){
+	@return ($size / 75) * 1rem;
+}
+//  也可以在这里加入其它方法或者mixin 后续哪里用到了引进去撸就行了
+
+// eg: 正方形
+@mixin square($h){
+    width:$h;
+    height:$h;
+}
+```
 
 **接着引入全局样式**
 
@@ -263,7 +279,7 @@ ReactDOM.render(
 
 然后让我们改一下`router`，的给组件`Chat`(聊天界面)增加路由拦截，通过“简单粗暴”地判断是否在cookie中存有我们用户的用户名，来实现路由跳转。如果有一个`username`的cookie，那么就粗暴地认为用户已经登录获得了权限，如果没有，就跳转到`Login`(注册/登录)组件，让用户去注册或者登录。
 
-```jsx {3, 14, 15, 16, 23}
+```jsx {3, 14, 15, 16, 23, 36}
 // router/index.js文件中
 // ...其他代码不变，引入Redirect重定向组件
 import {Route, Switch, Redirect} from 'react-router-dom';
@@ -292,6 +308,7 @@ function PrivateRouter({children, props}) {
 			{...props}
 			render={({location}) => {
 				const hasAuthority = getCookie('username');
+				// 这里将页面路由信息location传递进Login组建
 				return (
 					hasAuthority ? 
 					children : 
@@ -308,6 +325,7 @@ function PrivateRouter({children, props}) {
 })
 ```
 
+由于没登录的时候，访问的任何路由都会被重定向到`/login`路由，这里就需要将跳转前的路由信息传递给`Login`组件，等用户成功登录之后，再从`Login`组件中跳转回来继续访问。
 此时已经可以在项目中尝试输入非`/login`的path的时候，都会跳转到login里面了，这是因为我们没有请求接口，也没有手动往浏览器的`cookie`中写入`username`，所以一直被浏览器跳转到`/login`路由的缘故，当我们直接在控制台写入一条`username`的cookie时，就会发现已经可以为所欲为的去任何路由了。
 
 ```js
@@ -318,3 +336,372 @@ document.cookie='username=willliam';
 
 **这一部分的源代码可以在git仓库里面的`1-4`分支上查看。**
 
+### 将Login组件撸出来
+我们要实现的组件视图长这样。
+
+![](http://cdn.liwuhou.cn/blog/20200315001611.png)
+
+
+关于样式的编写，我就不多赘述了，因为我觉得这是基础中的基础。
+这里放出主要功能代码，完整的代码，还是可以在源码中看到
+
+```jsx
+import React from 'react';
+// 这里封装了一个弹框组件
+import Alert from '@/components/Alert';
+
+import {login} from '@/api'
+import './index.scss';
+
+export default class extends React.Component{
+	constructor(props){
+		super(props);
+		// 这里需要获取到路由跳转的from信息，好让我们登录的时候回到上一个页面
+		const {from} = this.props.location.state || {from: {pathname: '/'}}
+		this.state = {
+			from,
+			username: '',
+			password: '',
+			// 弹框信息
+			AlertProps: {
+				isShow: false,
+				title: '提示',
+				description: '',
+				onConfirm: this.onAlertConfirm,
+			},
+		}
+	}
+	
+	// 输入用户名
+	handleChangeUsername = (event) => {
+		const username = event.target.value.replace(/\s+/, '');
+		this.setState({
+			username
+		})
+	}
+    
+	// 输入密码
+	handleChangePawsword = (event) => {
+		const password = event.target.value;
+		this.setState({
+			password
+		})
+	}
+
+	handleKeyUpLogin = (event) => {
+		if(event.keyCode === 13) return this.handleClickSubmitUserData();
+	}
+
+	// 进入
+	handleClickSubmitUserData = async () => {
+		const {username, password} = this.state;
+		if(!username) return this.showAlert('请输入摸鱼者大名！');
+		if(!password) return this.showAlert('请输入摸鱼口令！');
+		if(username.length < 2) return this.showAlert('行走江湖名号怎可少于两个字！');
+		if(username.length > 8) return this.showAlert('摸鱼人的大名再大也大不过八个字！');
+		if(password.length < 6) return this.showAlert('口令太短，阁下请重新输过！');
+		if(password.length > 16) return this.showAlert('口令这么长，我都记不过来！');
+
+		console.log("Login -> handleClickSubmitUserData -> login", login)
+		const data = await login({username, password});
+		console.log("Login -> handleClickSubmitUserData -> data", data)
+		if(data.status !== 1) return this.showAlert(data.message);
+		
+		// 模拟请求成功后，响应头写入cookie的操作
+		document.cookie='username=willliam';
+		
+		// 验证成功，跳转回前一个页面
+		this.props.history.replace(this.state.from);
+	}
+
+	// 弹框展示
+	showAlert(description, title = '提示'){
+		this.setState(({AlertProps}) => ({
+			AlertProps: {
+				...AlertProps,
+				isShow: true,
+				title,
+				description
+			}
+		}))
+	}
+
+	// 弹框中的确定
+	onAlertConfirm = () => {
+		this.setState(({AlertProps}) => ({
+			AlertProps: {
+				...AlertProps,
+				isShow: false,
+				description: ''
+			}
+		}))   
+	}
+
+	render(){
+		return (
+			<div classname="login">
+				<img className="login__sologan" src="./sologan.svg" alt="武陵人摸鱼为业"/>
+				<div className="login__input">
+					<label htmlFor="username" className="login__input_label">摸鱼人：</label>
+					<input
+						type="text"
+						id="username" 
+						placeholder="请输入昵称"
+						value={this.state.username}
+						onKeyUp={this.handleKeyUpLogin}
+						onChange={}
+					/>
+				</div>
+				<div className="login__input">
+					<label htmlFor="password" className="login__input_label">摸鱼口令：</label>
+					<input 
+							id="password" 
+							type="password" 
+							placeholder="请输入密码"
+							value={this.state.password} 
+							onKeyUp={this.handleKeyUpLogin}
+							onChange={this.handleChangePawsword}
+					/>
+					<i 
+						className="login__info"
+						onClick={() => this.showAlert(`
+							初次进入将会注册昵称和账号，后续进入只需要输入已注册的账号和口令即可。
+					`)}></i>
+				</div>
+				<div className="login__submit">
+					<input
+						value="进 入" 
+						type="button" 
+						onClick={this.handleClickSubmitUserData}
+					/>
+				</div>
+			</div>
+		)
+	}
+}
+
+```
+
+在`src`目录下新建`api`目录，然后在目录中创建`index.js`用来存放api接口配置。
+
+```js
+// @/api/index.js
+import axios from 'axios'
+import qs from 'qs';
+
+// 注册/登录
+export const login = async (params) => {
+	// 由于我们还没开始写后端接口，这些先在公共目录下放一个json文件
+	const {data} = await axios.get('/api/login.json', qs.stringify(params));
+	return data;
+}
+```
+
+然后把`img`标签用到的svg图像放在`public`下，并在`public`目录中新建`api`目录，里面存放一个叫`login.json`的文件，用来模拟登陆接口。
+
+```json
+// /public/api/login.json
+{
+	"status": 1,
+	"data": "ok"
+}
+```
+
+**这一部分的源代码可以在git仓库里面的`2-1`分支上查看。**
+
+### 将Chat组件撸出来
+
+`/chat`页面的ui图如下，因为这个只是一个检验我koa2和mongodb学习成果的小demo，所以功能非常简陋，登录完就直接进到唯一的聊天室了。
+在这里，我用了一个`socket.io`的ws库来实现即时聊天的功能，这个库以前搞俄罗斯方块在线对战小demo的时候用过，还挺熟的，就没那么快多顾虑直接拿来用了。
+
+![](http://cdn.liwuhou.cn/blog/20200315002044.png)
+
+在日常开发中，我们常常会根据功能或者视图封装成组件，因为这样不仅实现功能模块复用的同时，也会把你的逻辑抽离成一个又一个具体的模块，让你不用每次有改动的时候，都在用到相同的功能的地方ctrl+c和ctrl+v。
+
+在`React`中，我常常有意无意将组件构建成一个类似像“纯函数”的单纯组件——接收参数（props），输出结果（视图）。除此之外，啥都不做，我感觉这样以后出bug也容易去定位。
+
+我按照标题栏(`Heading`)、消息列表(`MessageList`)、消息(`Message`)、时间戳(`Timer`)、通知(`Notice`)和输入框(含发送按钮`ChatInput`)拆分成组件。
+
+![](http://cdn.liwuhou.cn/blog/20200315194103.png)
+
+先把聊天室的容器写好，这里老规矩，只展示关键的代码，样式和其他一些细节可以查阅源代码
+
+```jsx
+import React from 'React';
+import Heading from '@/components/Heading';
+import MessageList from '@/components/MessageList';
+import ChatInput from '@/components/ChatInput';
+export default class Chat extends React.Component{
+
+	render(){
+		return (
+			<div className="chat">
+				<Heading/>
+				<MessageList/>
+				<ChatInput/>
+			</div>
+		)
+	}
+}
+```
+
+然后在`components`下编写以上这些组件。
+
+首先，标题栏是应用里将被复用得最多的组件之一，这里在聊天界面中就显示聊天室名称和当前在线人数。如果是其他界面就显示当前页标题。
+
+```jsx
+import React from 'React';
+// Heading组件，比较简单，接收当前标题(heading)和人数(count)
+export default function Heading({heading, count}){
+	return (
+		<div className="chat__heading">{heading}{count ? `(${count})` : ''}</div>
+	)
+}
+```
+
+通知组件用来投放一些系统级的通知，诸如用户进入/退出聊天室这些广播消息。这里立个flag，我还会在后续项目中会实现类似微信上的撤回信息和游戏邀请等其他功能。
+
+```jsx
+// Notice组件
+import React from 'React';
+export default function({content = ''}){
+	return (
+		<div className="notice_wrap">
+			{content}
+		</div>
+	)
+}
+```
+
+时间戳组件，即时聊天软件中必不可少的用来显示发信时间的功能根据与当前系统时间的对比，来动态的显示出`刚刚`、`1分钟前`这种比较友好的显示方式。
+
+```jsx
+import React from 'react'
+import {formatMillisecond} from 'utils'
+/**
+ * @time    发送时间
+ * @now     当前时间
+ */
+// 组件接收消息发送的时间和系统当前时间，通过formatMillisecond来展示时间
+export default function Timer({time, now = Date.now()}){
+	if(!time) return null;
+
+	return (
+		<div className="message_time">
+			<p>{formatMillisecond(time, now)}</p>
+		</div>
+	)
+}
+```
+
+这里由于考虑到将来的复用，将`formatMillisecond`函数提取到了公用方法里，感兴趣的同学可以看相关源代码。
+
+接下来是消息内容了，这里我通过判断发消息的用户名跟当前用户名来判断是不是出自本人的消息，如果是本人的，那么理所应当是要在右侧的，其他人都是出现在左侧，这点符合我们日常使用聊天app的习惯。
+
+```jsx
+import React from 'react'
+
+// 获取当前用户头像（取用户名）
+const getuserIcon = (name = '') => {
+	// 是否含有中文
+	const hasCn = name.match(/[\u4e00-\u9fa5]/g);
+	if(hasCn && hasCn.length){
+		return name.slice(name.length - 2);
+	}else{
+		return name.slice(0, 4);
+	}
+}
+
+/**
+ * @isSelf      是否当前用户的发言
+ * @username    这则消息的发言人
+ * @content     消息内容
+ */
+export default function Message({isSelf, username, content}){
+	return (
+		<div className={`message ${isSelf ? 'right' : 'left'}_message`}>
+			<div className="user">
+				<span className="user_icon">{getuserIcon(username)}</span>
+			</div>
+			<div className="speech">
+				<div className="username">{username}</div>
+				<div className="content">{content}</div>
+			</div>
+		</div>
+	)
+}
+```
+
+因为后端接口也是我们负责的，这里就可以开始考虑接口返回的聊天记录的数据结构了。我打算使用一个对象数组的json格式来表示聊天记录，大致结构如下：
+
+```json
+{
+	"data": [
+		{
+			"content": "我是内容", // String
+			"time": "发送时间", // Date
+			"username": "发消息的用户名", // String
+			"_id": "数据库的唯一标识符", // String
+			"isShowTime": "如果当前消息时间与上一条消息时间已经隔了有5分钟，就需要重新展示时间了" // Boolean
+		}
+	]
+}
+```
+
+既然都全栈了，那么前端这边对数据的处理能少就少了。就拿上面的`isShowTime`这个字段来说，通过后端在插入聊天数据的时候，对比数据中最尾部消息的时间，如果超过五分钟就为`true`，然后前端这边直接展示时间戳组件。
+
+很多情况下，用`Nodejs`做要比直接放在前端做性能要更好，也更能节省用户流量的。这也是`Node`作为后台或者中台，在提供接口或者接口融合和异构转换下的优势。
+
+好了，不小心又扯远了，让我们接着来撸出`MessageList`。
+
+```jsx
+// 这里我就用了React hooks的方式写组件了
+import React, {useState, useEffect, useRef, Fragment, useImperativeHandle} from 'react';
+
+export default function MessageList({list, ownUsername}){
+	// 当前系统时间戳，为节省性能，会5分钟刷新一次
+	let [currentDate, setDate] = useState(Date.now());
+
+	let chatWrap = useRef(null);
+	let messageWrap = useRef(null);
+
+	// 暴露子组件的方法给父组件
+	useImperativeHandle(ref, () => ({
+		// 是否需要滑动到底部
+		isNeedSlider(){
+			return (chatWrap.scrollHeight - (chatWrap.current.scrollTop + chatWrap.current.offsetHeight)) > 500;
+		},
+		// 滑动到底部的方法
+		sliderToBottom(){
+			chatWrap.current.scrollTop = messageWrap.current.offsetHeight;
+		}
+	}))
+
+	// 这里每设置一个定时器，每个五分钟刷新下currentDate
+	useEffect(() => {
+		let timer = setInterval(() => setDate(Date.now()));
+		return clearInterval(timer);
+	}, []) // 传入空数组，我不希望state更新的时候也调用这个副作用
+
+	return (
+		<div className="chat__content" ref={chatWrap}>
+			<ul ref={messageWrap}>
+				{
+					list.map(({_id, time, isShowTime = false, username, content, event = 'chat'}, idx) => (
+						<li key={_id}>
+							{
+								event === 'notice' ? <Notice content={content}/> : (
+									<Fragment>
+										{isShowTime && <Timer time={time} now={currentDate}/>}
+										<Message isSelf={ownUsername === username} content={content} username={username}/>
+									</Fragment>
+								)
+							}
+						</li>
+					))
+				}
+			</ul>
+		</div>
+	)
+}
+```
