@@ -1,25 +1,23 @@
 ---
-title: Koa2+MongoDB+React撸个即时聊天web应用
+title: Koa2+MongoDB+React撸个即时聊天web应用(上)
 date: 2020-02-10
 tags: 
     - NodeJs
     - React
     - MongoDB
-summary: 使用React+Koa2+MongoDB实现一个即时聊天的web应用
+summary: 学习了`Koa2`和`MongoDB`之后，突然就想着撸个实战项目出来看看，想来想去，还是搞个即时聊天应用出来玩玩吧。这篇是前端部分的编写，省略了一些样式的赘述，文章其实还是挺简短的...
 ---
 
-# Koa2+MongoDB+React撸个即时聊天web应用
+# Koa2+MongoDB+React撸个即时聊天web应用(上)
 
 学习了`Koa2`和`MongoDB`之后，突然就想着撸个实战项目出来看看，想来想去，还是搞个即时聊天应用出来玩玩吧。
 
 项目的所有源码已经放到[Github](https://github.com/hugewilliam/chat_room/tree/simple_chat)
 我也把最终的效果放到线上服务器了[摸鱼俱乐部聊天室](https://liwuhou.cn/chat)
 
-前端部分我使用了`React`来搭建界面，工作用的都是`Vue`，感觉再不用用`React`就要生疏了……
+前端部分我使用了`React`来搭建界面，因为工作用的都是`Vue`，感觉再不用用`React`就要生疏了……
 
-## 前端部分
-
-我使用的是`create-react-app`脚手架来搭建项目
+这篇文章主要讲述前端部分代码的编写，这里我使用的是`create-react-app`脚手架来搭建项目。
 
 ### 搭建项目
 
@@ -111,18 +109,14 @@ ReactDOM.render(
 **这一部分的源代码可以在git仓库里面的`init`分支上查看。**
 
 
-### 配置路由及封装axios
+### 配置路由及安装axios
 
 这个demo中，我路由管理用的是`react-router-dom`，异步请求使用的是`axios`库。
 话不多说，先安装相关依赖
 
-```shell
-
+```shell {1}
 $ yarn add react-router-dom axios 
-
 ```
-
-#### 编写路由配置
 
 由于这里只是一个很简单的小demo，所以路由并不多。其实也就两个，一个是初始进入时的注册和登录页(`/login`)，还有就是聊天界面(`/chat`)。
 在`src`目录新建一个`router`目录，并在目录下放新建`index.js`文件，现在我们来编写应用里可能会用到的路由跳转。
@@ -516,7 +510,7 @@ export const login = async (params) => {
 
 ![](http://cdn.liwuhou.cn/blog/20200315002044.png)
 
-在日常开发中，我们常常会根据功能或者视图封装成组件，因为这样不仅实现功能模块复用的同时，也会把你的逻辑抽离成一个又一个具体的模块，让你不用每次有改动的时候，都在用到相同的功能的地方ctrl+c和ctrl+v。
+在日常开发中，我们常常会根据功能或者视图封装成组件，因为这样不仅实现功能模块复用的同时，也会把你的逻辑抽离成一个又一个具体且独立的模块，让你不用每次有改动的时候，都在用到相同的功能的地方ctrl+c和ctrl+v。
 
 在`React`中，我常常有意无意将组件构建成一个类似像“纯函数”的单纯组件——接收参数（props），输出结果（视图）。除此之外，啥都不做，我感觉这样以后出bug也容易去定位。
 
@@ -547,6 +541,8 @@ export default class Chat extends React.Component{
 
 然后在`components`下编写以上这些组件。
 
+#### 标题栏
+
 首先，标题栏是应用里将被复用得最多的组件之一，这里在聊天界面中就显示聊天室名称和当前在线人数。如果是其他界面就显示当前页标题。
 
 ```jsx
@@ -558,6 +554,8 @@ export default function Heading({heading, count}){
 	)
 }
 ```
+
+#### 通知组件
 
 通知组件用来投放一些系统级的通知，诸如用户进入/退出聊天室这些广播消息。这里立个flag，我还会在后续项目中会实现类似微信上的撤回信息和游戏邀请等其他功能。
 
@@ -572,6 +570,8 @@ export default function({content = ''}){
 	)
 }
 ```
+
+#### 时间戳组件
 
 时间戳组件，即时聊天软件中必不可少的用来显示发信时间的功能根据与当前系统时间的对比，来动态的显示出`刚刚`、`1分钟前`这种比较友好的显示方式。
 
@@ -597,6 +597,8 @@ export default function Timer({time, now = Date.now()}){
 这里由于考虑到将来的复用，将`formatMillisecond`函数提取到了公用方法里，感兴趣的同学可以看相关源代码。
 
 接下来是消息内容了，这里我通过判断发消息的用户名跟当前用户名来判断是不是出自本人的消息，如果是本人的，那么理所应当是要在右侧的，其他人都是出现在左侧，这点符合我们日常使用聊天app的习惯。
+
+#### 单条消息内容组件
 
 ```jsx
 import React from 'react'
@@ -632,6 +634,8 @@ export default function Message({isSelf, username, content}){
 }
 ```
 
+#### 消息列表
+
 因为后端接口也是我们负责的，这里就可以开始考虑接口返回的聊天记录的数据结构了。我打算使用一个对象数组的json格式来表示聊天记录，大致结构如下：
 
 ```json
@@ -662,6 +666,7 @@ export default function MessageList({list, ownUsername}){
 	// 当前系统时间戳，为节省性能，会5分钟刷新一次
 	let [currentDate, setDate] = useState(Date.now());
 
+	// 外部容易和聊天容器的ref
 	let chatWrap = useRef(null);
 	let messageWrap = useRef(null);
 
@@ -687,7 +692,7 @@ export default function MessageList({list, ownUsername}){
 		<div className="chat__content" ref={chatWrap}>
 			<ul ref={messageWrap}>
 				{
-					list.map(({_id, time, isShowTime = false, username, content, event = 'chat'}, idx) => (
+					list.map(({_id, time, isShowTime = false, username, content, event = 'chat'}) => (
 						<li key={_id}>
 							{
 								event === 'notice' ? <Notice content={content}/> : (
@@ -705,3 +710,96 @@ export default function MessageList({list, ownUsername}){
 	)
 }
 ```
+
+#### 输入发送框
+
+最后在封装下`ChatInput`组件，由于我们期望组件越单纯越好，这里会将逻辑都放到外部组件去，只留一个输入框和按钮给到他用来展示和交互。
+
+```jsx
+import React from 'react';
+
+export default function ChatInput({onSendMessage}){
+	const [message, setMessage] = useState('');
+	// 输入框回车发送
+	function handleKeyUpMessage(event){
+		if(event.keyCode === 13) return handleClickSendMessage;
+	}
+
+	// 发送按钮
+	handleClickSendMessage(){
+		if(!message) return;
+		onSendMessage(message);
+		setMessage('');
+	}
+	return (
+		<div className="chat__input">
+			<input
+				className="chat__input_white"
+				value={message}
+				onChange={setMessage}
+				onKeyUp={handleKeyUpMessage}
+			/>
+			<button
+				className="chat__input_btn"
+				onClick={this.handleClickSendMessage}
+			>发送</button>
+		</div>
+	)
+}
+```
+
+#### 在Chat组件中引入
+
+最后回到`Chat`组件，将`Heading`、`MessageList`和`ChatInput`引入
+
+```jsx {30,31,32}
+// Chat.jsx
+class Chat extends React.Component{
+	this.state = {
+		heading: '摸鱼俱乐部',
+		count: 1,
+		messageList: [ // 假数据
+			{
+				_id: 'xx',
+				time: Date.now() - 1000,
+				username: '阿五',
+				event: 'notice',
+				content: '阿五帅气地进入了聊天室'
+			},
+			{
+				_id: 'xxx',
+				time: Date.now(),
+				username: '阿五',
+				event: 'chat',
+				content: 'Hello world！',
+			}
+		]
+	}
+	onSendMessage = (message) => {
+		// 跟接口交互，发送聊天信息
+	}
+	render(){
+		const {heading, count, messageList, ownUsername} = this.state;
+		return (
+			<div className="chat">
+				<Heading heading={heading} count={count}/>
+				<MessageList list={messageList} ownUsername={ownUsername}/>
+				<ChatInput onSendMessage={this.onSendMessage}/>
+			</div>
+		)
+	}
+}
+```
+
+### 小结
+
+至此，我们这个小应用中，前端部分的代码算是告一段落了，剩下的只要结合接口，在`Chat`组件的生命周期中调用api接口获取聊天记录，然后在`onSendMessage`方法里请求接口发送消息。在这篇文章中，我们先用`create-react-app`脚手架搭建了一个项目，一步一步的按照组件的规范编写项目中前端部分的代码。其中用了`public`目录放置json文件来模拟接口返回的操作，封装了公用方法和公用组件，也尝试用了`React Hooks`这种比较新的写法。
+
+下一篇将从零开始，说下小应用中，后端代码部分的编写。
+
+> 每次花个十分钟，懂一个React知识点，走得虽慢，只要坚持走下去，足以致千里。
+
+关注本人公众号
+
+![](http://cdn.liwuhou.cn/blog/20200306223709.png)
+
