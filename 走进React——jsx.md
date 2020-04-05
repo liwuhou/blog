@@ -5,7 +5,7 @@ tags:
     - React
     - Javascript
 summary: 用React开发时，最具标识性的，估计就是jsx语法了。它并不是HTML，也不是字符串，官方称之为——一个javascript的语法拓展。
----
+--- 
 
 # 走进React——jsx
 
