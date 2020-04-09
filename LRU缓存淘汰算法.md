@@ -48,7 +48,7 @@ summary: LRU缓存淘汰算法(Lastest Recently Used)，即最近最少使用的
 
 ```vue
 <keep-alive>
-	<component :is="view"></component>
+  <component :is="view"></component>
 </keep-alive>
 ```
 
@@ -63,34 +63,34 @@ export default {
   abstract: true,
 
   props: {
-		// 符合缓存的条件
-		include: patternTypes,
-		// 符合不缓存的条件
-		exclude: patternTypes,
-		// 限制缓存组件的大小
+    // 符合缓存的条件
+    include: patternTypes,
+    // 符合不缓存的条件
+    exclude: patternTypes,
+    // 限制缓存组件的大小
     max: [String, Number]
   },
 
   created () {
-		// 初始化用于存储缓存的 cache 对象
+    // 初始化用于存储缓存的 cache 对象
     this.cache = Object.create(null);
     // 初始化用于存储VNode key值的 keys 数组
     this.keys = [];
   },
 
   destroyed () {
-		// keep-alive组件销毁时，删除所有缓存的组件
+    // keep-alive组件销毁时，删除所有缓存的组件
     for (const key in this.cache) {
       pruneCacheEntry(this.cache, key, this.keys)
     }
   },
 
   mounted () {
-		/**
-		 * 监听缓存，include中，满足条件的缓存；exclude中满足条件的不缓存
-		 * purneCache 传入实例和过滤的方法，用以过滤实例里的cache
-		 * matches		判断组件名是否与条件匹配
-		 */
+    /**
+     * 监听缓存，include中，满足条件的缓存；exclude中满足条件的不缓存
+     * purneCache 传入实例和过滤的方法，用以过滤实例里的cache
+     * matches		判断组件名是否与条件匹配
+     */
     this.$watch('include', val => {
       pruneCache(this, name => matches(val, name))
     })
@@ -100,13 +100,13 @@ export default {
   },
 
   render () {
-		// 获取第一个子元素的slot
+    // 获取第一个子元素的slot
     const slot = this.$slots.default
     const vnode: VNode = getFirstComponentChild(slot)
-		const componentOptions: ?VNodeComponentOptions = vnode && vnode.componentOptions
+    const componentOptions: ?VNodeComponentOptions = vnode && vnode.componentOptions
 
     if (componentOptions) {
-			// check pattern
+      // check pattern
       const name: ?string = getComponentName(componentOptions)
       const { include, exclude } = this
       if ( // 检查组件名如果不在include中，或者在exclude中的，就直接返回VNode，不缓存
@@ -118,30 +118,30 @@ export default {
         return vnode
       }
 
-			// 满足缓存条件的
-			const { cache, keys } = this
-			// 定义键名
+      // 满足缓存条件的
+      const { cache, keys } = this
+      // 定义键名
       const key: ?string = vnode.key == null
         // same constructor may get registered as different local components
         // so cid alone is not enough (#3269)
         ? componentOptions.Ctor.cid + (componentOptions.tag ? `::${componentOptions.tag}` : '')
-				: vnode.key
+        : vnode.key
 
-			// 这里就是LRU算法的实现了
+      // 这里就是LRU算法的实现了
       if (cache[key]) { // 组件已经在cache中缓存了的话
         vnode.componentInstance = cache[key].componentInstance
-				// make current key freshest
-				// 将当前组件的key值放置到最新的位置（删掉原本的，再push到队尾）
+        // make current key freshest
+        // 将当前组件的key值放置到最新的位置（删掉原本的，再push到队尾）
         remove(keys, key)
         keys.push(key)
-			} else { // 组件如果还没缓存进cache里的话
-				// 将组件放进cache缓存，将key追加进keys队尾
+      } else { // 组件如果还没缓存进cache里的话
+        // 将组件放进cache缓存，将key追加进keys队尾
         cache[key] = vnode
         keys.push(key)
-				// prune oldest entry
-				// 判断当前缓存大小是否超过限制
+        // prune oldest entry
+        // 判断当前缓存大小是否超过限制
         if (this.max && keys.length > parseInt(this.max)) {
-					// 超出限制就将最久未被使用的组件删除（keys队首）
+          // 超出限制就将最久未被使用的组件删除（keys队首）
           pruneCacheEntry(cache, keys[0], keys, this._vnode)
         }
       }
@@ -161,12 +161,12 @@ function pruneCacheEntry (
 ) {
   const cached = cache[key]
   if (cached && (!current || cached.tag !== current.tag)) {
-		// 卸载组件
+    // 卸载组件
     cached.componentInstance.$destroy()
-	}
-	// 清除组件在cache中的缓存
-	cache[key] = null
-	// 删除key
+  }
+  // 清除组件在cache中的缓存
+  cache[key] = null
+  // 删除key
   remove(keys, key)
 }
 
