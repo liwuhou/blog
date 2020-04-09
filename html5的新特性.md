@@ -127,7 +127,7 @@ context.stroke();
 ```
 > 结果如下：
 
-![](https://blogs-1257826393.cos.ap-shenzhen-fsi.myqcloud.com/15237216370408.jpg)
+![](http://cdn.liwuhou.cn/blog/20200306224154.png)
 
 > 绘制一个连续的折线
 
@@ -141,7 +141,7 @@ context.stroke();
 ```
 > 结果如下：
 
-![](https://blogs-1257826393.cos.ap-shenzhen-fsi.myqcloud.com/15237217434832.jpg)
+![](http://cdn.liwuhou.cn/blog/20200306224214.png)
 
 上面简单的例我们使连续绘制的折线，也就是说可以一笔连续画完的折线。如果是条多间断的折线，那么就需要多次使用context.moveTo()来重新绘制一条折线的起点坐标：
 
@@ -162,9 +162,9 @@ context.stroke();
 ```
 > 结果如下：
 
-![](https://blogs-1257826393.cos.ap-shenzhen-fsi.myqcloud.com/15237219497132.jpg)
+![](http://cdn.liwuhou.cn/blog/20200306224234.png)
 
 
 关注本人公众号
 
-![](https://blogs-1257826393.cos.ap-shenzhen-fsi.myqcloud.com/qrcode_for_gh_373ae200ef34_344.jpg)
+![](http://cdn.liwuhou.cn/blog/20200306223709.png)
