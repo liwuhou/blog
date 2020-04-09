@@ -2,8 +2,8 @@
 title: LRU缓存淘汰算法
 date: 2020-04-08
 tags: 
-	- Javascript
-	- Algorithm
+  - Javascript
+  - Algorithm
 summary: LRU缓存淘汰算法(Lastest Recently Used)，即最近最少使用的缓存数据会被淘汰的算法。于前端而言，日常接触到的浏览器中的缓存策略、Vue中的keep-alive，都涉及到了该算法，名称听上去好像有些高大上，其实原理和实现还是很简单的，赶紧进来点亮下技能吧！
 ---
 
@@ -41,147 +41,147 @@ summary: LRU缓存淘汰算法(Lastest Recently Used)，即最近最少使用的
 **keep-alive**
 
 - props
-	- `include` 字符串或正则表达式。只有名称匹配的组件会被缓存。
-	- `exclude` 字符串或正则表达式。只有名称匹配的组件都不会被缓存。
-	- `max` 数字。最多可以缓存多少组件实例。2.5.0 版本新增。
+  - `include` 字符串或正则表达式。只有名称匹配的组件会被缓存。
+  - `exclude` 字符串或正则表达式。只有名称匹配的组件都不会被缓存。
+  - `max` 数字。最多可以缓存多少组件实例。2.5.0 版本新增。
 - 用法
 
 ```vue
 <keep-alive>
-	<component :is="view"></component>
+  <component :is="view"></component>
 </keep-alive>
 ```
 
 `keep-alive`在 vue 中的实现
 
 ```ts
-	const patternTypes: Array<Function> = [String, RegExp, Array];
+  const patternTypes: Array<Function> = [String, RegExp, Array];
 
-	export default {
-		name: 'keep-alive',
-		// 标记为抽象组件，不会渲染成DOM元素，也不会出现在父组件链中
-		abstract: true,
+  export default {
+    name: 'keep-alive',
+    // 标记为抽象组件，不会渲染成DOM元素，也不会出现在父组件链中
+    abstract: true,
 
-		props: {
-			// 符合缓存的条件
-			include: patternTypes,
-			// 符合不缓存的条件
-			exclude: patternTypes,
-			// 限制缓存组件的大小
-			max: [String, Number]
-		},
+    props: {
+      // 符合缓存的条件
+      include: patternTypes,
+      // 符合不缓存的条件
+      exclude: patternTypes,
+      // 限制缓存组件的大小
+      max: [String, Number]
+    },
 
-		created () {
-			// 初始化用于存储缓存的 cache 对象
-			this.cache = Object.create(null);
-			// 初始化用于存储VNode key值的 keys 数组
-			this.keys = [];
-		},
+    created () {
+      // 初始化用于存储缓存的 cache 对象
+      this.cache = Object.create(null);
+      // 初始化用于存储VNode key值的 keys 数组
+      this.keys = [];
+    },
 
-		destroyed () {
-			// keep-alive组件销毁时，删除所有缓存的组件
-			for (const key in this.cache) {
-				pruneCacheEntry(this.cache, key, this.keys)
-			}
-		},
+    destroyed () {
+      // keep-alive组件销毁时，删除所有缓存的组件
+      for (const key in this.cache) {
+        pruneCacheEntry(this.cache, key, this.keys)
+      }
+    },
 
-		mounted () {
-			/**
-			 * 监听缓存，include中，满足条件的缓存；exclude中满足条件的不缓存
-			 * purneCache 传入实例和过滤的方法，用以过滤实例里的cache
-			 * matches		判断组件名是否与条件匹配
-			 */
-			this.$watch('include', val => {
-				pruneCache(this, name => matches(val, name))
-			})
-			this.$watch('exclude', val => {
-				pruneCache(this, name => !matches(val, name))
-			})
-		},
+    mounted () {
+      /**
+       * 监听缓存，include中，满足条件的缓存；exclude中满足条件的不缓存
+       * purneCache 传入实例和过滤的方法，用以过滤实例里的cache
+       * matches		判断组件名是否与条件匹配
+       */
+      this.$watch('include', val => {
+        pruneCache(this, name => matches(val, name))
+      })
+      this.$watch('exclude', val => {
+        pruneCache(this, name => !matches(val, name))
+      })
+    },
 
-		render () {
-			// 获取第一个子元素的slot
-			const slot = this.$slots.default
-			const vnode: VNode = getFirstComponentChild(slot)
-			const componentOptions: ?VNodeComponentOptions = vnode && vnode.componentOptions
+    render () {
+      // 获取第一个子元素的slot
+      const slot = this.$slots.default
+      const vnode: VNode = getFirstComponentChild(slot)
+      const componentOptions: ?VNodeComponentOptions = vnode && vnode.componentOptions
 
-			if (componentOptions) {
-				// check pattern
-				const name: ?string = getComponentName(componentOptions)
-				const { include, exclude } = this
-				if ( // 检查组件名如果不在include中，或者在exclude中的，就直接返回VNode，不缓存
-					// 不在include中
-					(include && (!name || !matches(include, name))) ||
-					// 在exclude中
-					(exclude && name && matches(exclude, name))
-				) {
-					return vnode
-				}
+      if (componentOptions) {
+        // check pattern
+        const name: ?string = getComponentName(componentOptions)
+        const { include, exclude } = this
+        if ( // 检查组件名如果不在include中，或者在exclude中的，就直接返回VNode，不缓存
+          // 不在include中
+          (include && (!name || !matches(include, name))) ||
+          // 在exclude中
+          (exclude && name && matches(exclude, name))
+        ) {
+          return vnode
+        }
 
-				// 满足缓存条件的
-				const { cache, keys } = this
-				// 定义键名
-				const key: ?string = vnode.key == null
-					// same constructor may get registered as different local components
-					// so cid alone is not enough (#3269)
-					? componentOptions.Ctor.cid + (componentOptions.tag ? `::${componentOptions.tag}` : '')
-					: vnode.key
+        // 满足缓存条件的
+        const { cache, keys } = this
+        // 定义键名
+        const key: ?string = vnode.key == null
+          // same constructor may get registered as different local components
+          // so cid alone is not enough (#3269)
+          ? componentOptions.Ctor.cid + (componentOptions.tag ? `::${componentOptions.tag}` : '')
+          : vnode.key
 
-				// 这里就是LRU算法的实现了
-				if (cache[key]) { // 组件已经在cache中缓存了的话
-					vnode.componentInstance = cache[key].componentInstance
-					// make current key freshest
-					// 将当前组件的key值放置到最新的位置（删掉原本的，再push到队尾）
-					remove(keys, key)
-					keys.push(key)
-				} else { // 组件如果还没缓存进cache里的话
-					// 将组件放进cache缓存，将key追加进keys队尾
-					cache[key] = vnode
-					keys.push(key)
-					// prune oldest entry
-					// 判断当前缓存大小是否超过限制
-					if (this.max && keys.length > parseInt(this.max)) {
-						// 超出限制就将最久未被使用的组件删除（keys队首）
-						pruneCacheEntry(cache, keys[0], keys, this._vnode)
-					}
-				}
+        // 这里就是LRU算法的实现了
+        if (cache[key]) { // 组件已经在cache中缓存了的话
+          vnode.componentInstance = cache[key].componentInstance
+          // make current key freshest
+          // 将当前组件的key值放置到最新的位置（删掉原本的，再push到队尾）
+          remove(keys, key)
+          keys.push(key)
+        } else { // 组件如果还没缓存进cache里的话
+          // 将组件放进cache缓存，将key追加进keys队尾
+          cache[key] = vnode
+          keys.push(key)
+          // prune oldest entry
+          // 判断当前缓存大小是否超过限制
+          if (this.max && keys.length > parseInt(this.max)) {
+            // 超出限制就将最久未被使用的组件删除（keys队首）
+            pruneCacheEntry(cache, keys[0], keys, this._vnode)
+          }
+        }
 
-				vnode.data.keepAlive = true
-			}
-			return vnode || (slot && slot[0])
-		}
-	}
+        vnode.data.keepAlive = true
+      }
+      return vnode || (slot && slot[0])
+    }
+  }
 
-	// 补充下pruneCacheEntry方法的实现
-	function pruneCacheEntry (
-		cache: VNodeCache,
-		key: string,
-		keys: Array<string>,
-		current?: VNode
-	) {
-		const cached = cache[key]
-		if (cached && (!current || cached.tag !== current.tag)) {
-			// 卸载组件
-			cached.componentInstance.$destroy()
-		}
-		// 清除组件在cache中的缓存
-		cache[key] = null
-		// 删除key
-		remove(keys, key)
-	}
+  // 补充下pruneCacheEntry方法的实现
+  function pruneCacheEntry (
+    cache: VNodeCache,
+    key: string,
+    keys: Array<string>,
+    current?: VNode
+  ) {
+    const cached = cache[key]
+    if (cached && (!current || cached.tag !== current.tag)) {
+      // 卸载组件
+      cached.componentInstance.$destroy()
+    }
+    // 清除组件在cache中的缓存
+    cache[key] = null
+    // 删除key
+    remove(keys, key)
+  }
 
-	// remove 方法（位于shared/util.js中）
-	/**
-	 * Remove an item from an array.
-	 */
-	export function remove (arr: Array<any>, item: any): Array<any> | void {
-		if (arr.length) {
-			const index = arr.indexOf(item)
-			if (index > -1) {
-				return arr.splice(index, 1)
-			}
-		}
-	}
+  // remove 方法（位于shared/util.js中）
+  /**
+   * Remove an item from an array.
+   */
+  export function remove (arr: Array<any>, item: any): Array<any> | void {
+    if (arr.length) {
+      const index = arr.indexOf(item)
+      if (index > -1) {
+        return arr.splice(index, 1)
+      }
+    }
+  }
 ```
 
 [vue 中 keep-alive 的源码](https://github.com/vuejs/vue/blob/dev/src/core/components/keep-alive.js)
