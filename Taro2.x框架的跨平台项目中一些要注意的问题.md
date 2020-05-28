@@ -1,6 +1,6 @@
 ---
 title:  Taro2.x框架的跨平台项目中一些要注意的问题
-date: 2020-05-27
+date: 2020-05-10
 tags:  
   - Javascript
   - Mini Program
