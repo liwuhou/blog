@@ -124,7 +124,7 @@ import Taro from '@tarojs/taro';
 // 保存的cookies
 let cookies = Taro.getStorageSync('cookies') || '';
 // 小程序环境
-const isMP = Taro.getEnv() !== Taro.ENV_TYPE.WEB || Taro.getEnv() !== Taro.ENV_TYPE.RN
+const isMP = Taro.getEnv() !== Taro.ENV_TYPE.WEB && Taro.getEnv() !== Taro.ENV_TYPE.RN
 
 // 项目中统一请求的方法
 export default const fetch = (option) => {
