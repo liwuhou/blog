@@ -1,5 +1,5 @@
 ---
-title:  Taro2.x框架的跨平台项目中一些要注意的问题
+title:  使用 Taro 2.x 跨平台开发的一些姿势
 date: 2020-05-10
 tags:  
   - Javascript
