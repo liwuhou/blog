@@ -159,3 +159,5 @@ ReactDOM.render(
 ```
 
 `ReactDom.render` 方法接受三个参数，第一个是渲染的 React 元素，第二个参数接收一个**真实 dom**节点，React 元素最终都是渲染到这个真实 dom 元素里的。
+
+![](http://cdn.liwuhou.cn/blog/公众号二维码1.0.png)
