@@ -194,7 +194,7 @@ function Parent(){
 	this.play = ['coding', 'reading']
 }
 
-Parent.getName = function(){
+Parent.prototype.getName = function(){
 	return this.name
 }
 
