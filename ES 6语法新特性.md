@@ -5,8 +5,6 @@ tags: Javascript
 summary: ES6的一些语法笔记
 ---
 
-# ES6语法的新特性
-
 #### let和const
 **let**和**const**将变量的的作用域限制在块中，可以避免因在执行JavaScript代码前，变量被提升所带来的问题。
 > let在同一作用域中只能声明一次，但可以重复赋值
@@ -15,7 +13,10 @@ summary: ES6的一些语法笔记
 - 当你打算为变量重新赋值的时候，则使用`let`
 - 当你不打算为变量重新复制的时候，则使用`const`
 
+<!-- more -->
+
 <br>
+
 #### 模板字面量
 **模板字面量**本质是包含嵌入式表达式的字符串字面量
 模板字面量用倒引号(`)表示的，可以包含用${expression}表示占位符，这样更容易构建字符串。
@@ -32,8 +33,6 @@ let message = xiaoming + ' like ' + Day +'!';
 let message = `${student} like ${Day}!`;
 
 ```
-
-<!-- more -->
 
 <br>
 

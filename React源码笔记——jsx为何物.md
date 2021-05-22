@@ -13,6 +13,8 @@ summary: jsx的本质是什么？为什么要用jsx开发？
 
 用了那么久的 `React` ， `jsx` 简直就是天天打照面的了。然鹅用得再熟，还是只是停留在形而上而已，像面试的时候，被问到 jsx 的本质是啥？还能不假思索说出是一个 js 对象，那这个对象怎么来的，是通过什么方式拓展了 js 这种类似 html 语法的能力的，就开始支支吾吾了。为了知其然知其所以然，也为了能满足自己的好奇心，我不由得想像小时候拆电话一样拆开 React 的源码一探究竟。最后拼回去还能不能打电话就不是我考虑的事了（老爸对不起，我下次不敢了）。
 
+<!-- more -->
+
 参考 `React` [官网的文档里对 jsx 的描述](https://reactjs.org/docs/glossary.html#jsx)——JSX 是一种 Javascript 的语法拓展，是一种具有全部 js 能力的模板语法。JSX 会被编译为 `React.createElement()` 方法，该方法调用后会返回一个被称为 `React元素` 的**纯 js 对象**。
 
 > JSX is a syntax extension to JavaScript. It is similar to a template language, but it has full power of JavaScript. JSX gets compiled to React.createElement() calls which return plain JavaScript objects called “React elements”
@@ -41,8 +43,6 @@ const element = React.createElement(
   'hello JSX!'
 )
 ```
-
-<!-- more -->
 
 从上面 React 的官网文档中可以得知，`React.createElement` 方法返回的是一个**纯 js 对象**，所以别着急，让我们再扒一扒 `createElement` 的源码。
 

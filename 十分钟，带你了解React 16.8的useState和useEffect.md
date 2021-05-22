@@ -8,16 +8,14 @@ tags:
 summary: Hooks是React 16.8新增的特性，并且他是向后兼容的，facebook也坦言没有计划会在React中移除class组件。你完全可以不使用hooks，一直使用class组件。
 ---
 
-# 十分钟，带你了解React 16.8的useState和useEffect
-
 `Hooks`是**React 16.8**新增的特性，并且他是向后兼容的，**facebook**也坦言没有计划会在**React**中移除class组件。你完全可以不使用`hooks`，一直使用class组件。
 
-<!-- more -->
 
 ### 概念
 `React hooks`允许你在非`class`组件中使用`state`和`React`其他的特性：`props`， `context`，`refs` 以及`生命周期`。
 `Hook`本质上是一些函数，可以在函数组件中“钩入”其他**React**的特性，使得你不用使用`class`也可以使用React。*值得注意的是，`hooks`是不能在`class`组件中使用的。*
 
+<!-- more -->
 ### State Hook
 这里贴一下官网文档中用`hooks`实现一个计数器的代码
 

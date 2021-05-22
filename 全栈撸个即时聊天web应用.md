@@ -8,8 +8,6 @@ tags:
 summary: 学习了`Koa2`和`MongoDB`之后，突然就想着撸个实战项目出来看看，想来想去，还是搞个即时聊天应用出来玩玩吧。这篇是前端部分的编写，省略了一些样式的赘述，文章其实还是挺简短的...
 ---
 
-# Koa2+MongoDB+React撸个即时聊天web应用(上)
-
 学习了`Koa2`和`MongoDB`之后，突然就想着撸个实战项目出来看看，想来想去，还是搞个即时聊天应用出来玩玩吧。
 
 项目的所有源码已经放到[Github](https://github.com/hugewilliam/chat_room/tree/simple_chat)

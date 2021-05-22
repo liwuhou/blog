@@ -5,8 +5,6 @@ tags: MongoDB
 summary: MongoDB的一下简单的操作指令
 ---
 
-# MongoDB手记
-
 MongoDB是一个NoSQL的数据库，不需要写SQL语句，而且里面存取的格式都是前端友好的JSON对象的形式。
 
 <!-- more -->

@@ -7,11 +7,8 @@ tags:
 summary: React是一个可以快速构建响应式界面的UI库，基于组件化开发，可以让你的数据与界面很大程度的解耦，让你能只专注于数据，而不用去操心界面的展示。
 ---
 
-# 走进React——React的样子
-
 `React`是一个可以快速构建响应式界面的**UI**库，基于组件化开发，可以让你的数据与界面很大程度的解耦，让你能只专注于数据，而不用去操心界面的展示。同时他也可以通过不同的渲染器来渲染你的react范式的代码，譬如`react-native`，他可以让用"react范式"写出原生应用，运行在各种移动设备中。
 
-<!-- more -->
 
 ### react的样子
 其实react代码的样子很纯粹，纯粹到让你惊呼，这不就是`html`+`js`吗?是的，没有隔壁`vue`家的模板和众多的api，熟悉一下`jsx`,知道组件的生命周期钩子，你就可以用上手写出一下小应用了
@@ -24,18 +21,21 @@ import React, {Component} from 'react'
 import ReactDOM from 'react-dom'
 
 default class Test extends Component{
-	render(){
-		return (
-			<div>{this.props.test}</div>
+  render(){
+    return (
+      <div>{this.props.test}</div>
 		)
 	}
 }
 
 ReactDOM.render(
-	<Test test="一串字符" />,
+  <Test test="一串字符" />,
 	document.querySelector('#root')
 );
 ```
+
+<!-- more -->
+
 其实，这还不是`react`真正的样子，`jsx`通过[babal转义工具](https://babeljs.io/repl/#?presets=react&code_lz=MYewdgzgLgBApgGzgWzmWBeGAeAFgRgD4AJRBEAGhgHcQAnBAEwEJsB6AwgbgChRJY_KAEMAlmDh0YWRiGABXVOgB0AczhQAokiVQAQgE8AkowAUAcjogQUcwEpeAJTjDgUACIB5ALLK6aRklTRBQ0KCohMQk6Bx4gA)转义为js，真正的样子是这样的：
 
 ```js

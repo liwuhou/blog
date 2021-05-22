@@ -5,8 +5,9 @@ tags: Css
 summary: 几种开发中，常见的css布局的笔记
 ---
 
-# css的几种布局手记
 总结了几种css布局的方法
+
+<!-- more -->
 
 ## 三列布局
 中间一列永恒居中且高度自适应效果，如图
@@ -33,8 +34,6 @@ summary: 几种开发中，常见的css布局的笔记
 		<div class="middle"></div>
 	</div>
 ```
-
-<!-- more -->
 
 #### 利用父元素的padding
 利用父元素的padding，将子元素“挤”向中间
