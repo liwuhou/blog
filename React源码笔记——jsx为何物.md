@@ -42,6 +42,8 @@ const element = React.createElement(
 )
 ```
 
+<!-- more -->
+
 从上面 React 的官网文档中可以得知，`React.createElement` 方法返回的是一个**纯 js 对象**，所以别着急，让我们再扒一扒 `createElement` 的源码。
 
 ```JavaScript

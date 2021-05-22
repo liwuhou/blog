@@ -33,6 +33,9 @@ summary: 几种开发中，常见的css布局的笔记
 		<div class="middle"></div>
 	</div>
 ```
+
+<!-- more -->
+
 #### 利用父元素的padding
 利用父元素的padding，将子元素“挤”向中间
 

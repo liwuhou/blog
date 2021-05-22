@@ -11,50 +11,52 @@ summary: 一些html5中的新api和特性
 > API(Application Programming Interface)
 > 是一些预先定义的函数，目的是提供应用程序与开发人员基于某软件或硬件得以访问一组例程的能力，而又无需访问源码，或理解内部工作机制的细节。
 
+<!-- more -->
+
 #### Video/Audio-API
 **video对象的方法**
  
-| 方法名 | 效果 |
-| --- | --- |
-| load() | 加载其他视频（如果有的话） |
-| play() | 视频开始播放 |
-| pause() | 视频暂停 |
-| addTextTrack() | 向音频/视频添加新的文本轨道 |
-| canPlayType() | 检测浏览器是否能播放指定的音频/视频资源 |
+| 方法名         | 效果                                    |
+| -------------- | --------------------------------------- |
+| load()         | 加载其他视频（如果有的话）              |
+| play()         | 视频开始播放                            |
+| pause()        | 视频暂停                                |
+| addTextTrack() | 向音频/视频添加新的文本轨道             |
+| canPlayType()  | 检测浏览器是否能播放指定的音频/视频资源 |
 
 **video对象的属性**
 
-| 属性 | 描述 |
-| --- | --- |
-| autoplay | 设置或返回是否在加载完成后马上播放音频/视频 |
-| controls | 设置或返回音频/视频是否显示控件  |
-| loop | 设置或返回音频/视频是否应在结束时重新播放 |
-| muted | 设置或返回音频/视频是否静音 |
-| paused | 设置或返回音频/视频是否暂停 |
-| src | 设置或返回音频/视频元素的当前来源 |
-| volume | 设置或返回音频/视频的音量 |
-| audioTracks | 返回表示可用音轨的AudioTrackList对象 |
-| buffered | 返回表示音频/视频已缓冲部分的TimeRanges对象 |
-| controller | 返回表示音频/视频当前媒体控制器的MediaController对象 |
-| corssOrigin | 设置或返回音频/视频的CORS设置 |
-| currentSrc | 返回当前音频/视频的URL |
-| currentTIme | 设置或返回音频/视频中当前播放位置（以秒计） |
-| defaultMuted | 设置或返回音频/视频默认是否静音 |
-| defaultPlaybackRate | 设置或返回音频/视频的默认播放速度 |
-| duration | 返回当前音频/视频的长度（以秒计） |
-| ended | 返回音频/视频的播放是否已结束 |
-| error | 返回表示音频/视频错误状态的MediaErro让对象 |
-| mediaGroup | 设置或返回音频/视频所述的组合（用于连接多个音频/视频元素） |
-| networkState | 返回音频/视频的当前网络状态 |
-| playBackRate | 设置或返回音频/视频播放的速度 |
-| played | 返回表示音频/视频一播放部分的TimeRanges对象 |
-| preload | 设置或返回音频/视频是否应该在页面加载后进行加载 |
-| readyState | 返回音频/视频当前的就绪状态  |
-| seekable | 返回表示音频/视频可寻址部分的TimeRabges对象 |
-| seeking | 返回用户是否正在音频/视频中进行查找 |
-| startDate | 返回表示当前时间偏移的Date对象 |
-| textTracks | 返回表示可用文本轨道的TextTrackList对象 |
-| VideoTracks | 返回表示可用视频轨道的videoTrackList对象 |
+| 属性                | 描述                                                       |
+| ------------------- | ---------------------------------------------------------- |
+| autoplay            | 设置或返回是否在加载完成后马上播放音频/视频                |
+| controls            | 设置或返回音频/视频是否显示控件                            |
+| loop                | 设置或返回音频/视频是否应在结束时重新播放                  |
+| muted               | 设置或返回音频/视频是否静音                                |
+| paused              | 设置或返回音频/视频是否暂停                                |
+| src                 | 设置或返回音频/视频元素的当前来源                          |
+| volume              | 设置或返回音频/视频的音量                                  |
+| audioTracks         | 返回表示可用音轨的AudioTrackList对象                       |
+| buffered            | 返回表示音频/视频已缓冲部分的TimeRanges对象                |
+| controller          | 返回表示音频/视频当前媒体控制器的MediaController对象       |
+| corssOrigin         | 设置或返回音频/视频的CORS设置                              |
+| currentSrc          | 返回当前音频/视频的URL                                     |
+| currentTIme         | 设置或返回音频/视频中当前播放位置（以秒计）                |
+| defaultMuted        | 设置或返回音频/视频默认是否静音                            |
+| defaultPlaybackRate | 设置或返回音频/视频的默认播放速度                          |
+| duration            | 返回当前音频/视频的长度（以秒计）                          |
+| ended               | 返回音频/视频的播放是否已结束                              |
+| error               | 返回表示音频/视频错误状态的MediaErro让对象                 |
+| mediaGroup          | 设置或返回音频/视频所述的组合（用于连接多个音频/视频元素） |
+| networkState        | 返回音频/视频的当前网络状态                                |
+| playBackRate        | 设置或返回音频/视频播放的速度                              |
+| played              | 返回表示音频/视频一播放部分的TimeRanges对象                |
+| preload             | 设置或返回音频/视频是否应该在页面加载后进行加载            |
+| readyState          | 返回音频/视频当前的就绪状态                                |
+| seekable            | 返回表示音频/视频可寻址部分的TimeRabges对象                |
+| seeking             | 返回用户是否正在音频/视频中进行查找                        |
+| startDate           | 返回表示当前时间偏移的Date对象                             |
+| textTracks          | 返回表示可用文本轨道的TextTrackList对象                    |
+| VideoTracks         | 返回表示可用视频轨道的videoTrackList对象                   |
 
 **video对象的事件**
 

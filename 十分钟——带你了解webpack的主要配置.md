@@ -17,6 +17,8 @@ webpack本质上是一个打包工具，它会根据代码的内容解析模块�
 ![webpack](http://cdn.liwuhou.cn/blog/20200306224904.png)
 
 
+<!-- more -->
+
 ### 入口
 
 多个代码模块中会有一个起始的`.js`文件，这个便是webpack构建的入口。webpack会读取这个文件，并从他开始解析依赖，然后进行打包。你热播的入口文件就是`./src/index.js`。
@@ -189,11 +191,11 @@ module.exports = (env, argv) => ({
 
 4.x也可以通过设置[mode](https://webpack.docschina.org/concepts/mode/)，或者从CLI参数中传递 `webpack --mode=production`
 
-|选项|描述|
-|:------:|:-------|
-|`development`|会将`DefinePlugin`中的`process.env.NODE_ENV`的值设置为`development`。启用`NamedChunksPlugin`和`NameModulesPlugin`。|
-|`production`|会将`DefinePlugin`中的`process.env.NODE_ENV`的值设置为`production`。启用`FlagDependencyUsagePlugin`, `FlagIncludedChunksPlugin`, `ModuleConcatenationPlugin`, `NoEmitOnErrorsPlugin`, `OccurrenceOrderPlugin`, `SideEffectsFlagPlugin` 和 `TerserPlugin`。|
-|`none`|退出任何默认优化选项|
+|     选项      | 描述                                                                                                                                                                                                                                                       |
+| :-----------: | :--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `development` | 会将`DefinePlugin`中的`process.env.NODE_ENV`的值设置为`development`。启用`NamedChunksPlugin`和`NameModulesPlugin`。                                                                                                                                        |
+| `production`  | 会将`DefinePlugin`中的`process.env.NODE_ENV`的值设置为`production`。启用`FlagDependencyUsagePlugin`, `FlagIncludedChunksPlugin`, `ModuleConcatenationPlugin`, `NoEmitOnErrorsPlugin`, `OccurrenceOrderPlugin`, `SideEffectsFlagPlugin` 和 `TerserPlugin`。 |
+|    `none`     | 退出任何默认优化选项                                                                                                                                                                                                                                       |
 
 
 

@@ -9,6 +9,8 @@ summary: MongoDB的一下简单的操作指令
 
 MongoDB是一个NoSQL的数据库，不需要写SQL语句，而且里面存取的格式都是前端友好的JSON对象的形式。
 
+<!-- more -->
+
 ### MongoDB的安装
 
 安装好MongoDB数据库后，我们需要启用服务端才能使用。启用服务的命令是：Mongod。
@@ -68,18 +70,18 @@ print(y());
 
 #### **`update`方法中还有很多修改器**
 
-|    名称     | 作用                                                         | 示例                                                         |
-| :---------: | :----------------------------------------------------------- | :----------------------------------------------------------- |
-|   `$set`    | 修改一个指定的键值                                           | `db.test.update({name: 'william'}, {$set: {sex: 1}})`<br />`db.test.update({name: 'william'}, {$set: {'interest.2': 'code'}})` |
-|  `$unset`   | 将key删除                                                    | `db.test.update({name: 'william'}, {$uset: {age: ''}})`      |
-|   `$inc`    | 对数据进行计算                                               | `db.test.update({name: 'william'}, {$inc: {age: -2}})`       |
-|   `$push`   | 数组数据追加(可内嵌文档)                                     | `db.test.update({name: 'william'}, {$push: {interest: 'code'}})`<br />`db.test.update({name: 'william'}, {$push: {'skill.skuFour': 'coding'}})` |
-|    `$ne`    | 查有不执行，无则执行                                         | `db.test.update({name: 'william', interest: {$ne: 'playGame'}}, {$push: {interest: 'playGame'}})` |
-| `$addToSet` | 查找是否存在，不存在就直接`$push`                            | `db.test.update({name: 'william'}, {$addToSet: {interest: 'read'}})` |
-|   `$each`   | 批量追加                                                     | `db.test.update({name: 'william'}, {$addToSet: {interest: {$each: ['singing', 'dance', 'code']}}})` |
-|   `$pop`    | 删除开头/结尾数组值<br /> 1： 从数组尾部删除; -1：从数组开头删除; | `db.test.update({name: 'william'}, {$pop: {interest: 1, 'skill.skillFour': -1}})` |
-|  `upsert`   | 查有则改，无则添加                                           | `db.test.update({name: 'william'}, {$set: {age: 20}}, {upsert: true})` |
-|   `multi`   | 对所有数据进行复数操作                                       | `db.test.update({}, {$set: {interest: []}}, {multi: true})`  |
+|    名称     | 作用                                                              | 示例                                                                                                                                            |
+| :---------: | :---------------------------------------------------------------- | :---------------------------------------------------------------------------------------------------------------------------------------------- |
+|   `$set`    | 修改一个指定的键值                                                | `db.test.update({name: 'william'}, {$set: {sex: 1}})`<br />`db.test.update({name: 'william'}, {$set: {'interest.2': 'code'}})`                  |
+|  `$unset`   | 将key删除                                                         | `db.test.update({name: 'william'}, {$uset: {age: ''}})`                                                                                         |
+|   `$inc`    | 对数据进行计算                                                    | `db.test.update({name: 'william'}, {$inc: {age: -2}})`                                                                                          |
+|   `$push`   | 数组数据追加(可内嵌文档)                                          | `db.test.update({name: 'william'}, {$push: {interest: 'code'}})`<br />`db.test.update({name: 'william'}, {$push: {'skill.skuFour': 'coding'}})` |
+|    `$ne`    | 查有不执行，无则执行                                              | `db.test.update({name: 'william', interest: {$ne: 'playGame'}}, {$push: {interest: 'playGame'}})`                                               |
+| `$addToSet` | 查找是否存在，不存在就直接`$push`                                 | `db.test.update({name: 'william'}, {$addToSet: {interest: 'read'}})`                                                                            |
+|   `$each`   | 批量追加                                                          | `db.test.update({name: 'william'}, {$addToSet: {interest: {$each: ['singing', 'dance', 'code']}}})`                                             |
+|   `$pop`    | 删除开头/结尾数组值<br /> 1： 从数组尾部删除; -1：从数组开头删除; | `db.test.update({name: 'william'}, {$pop: {interest: 1, 'skill.skillFour': -1}})`                                                               |
+|  `upsert`   | 查有则改，无则添加                                                | `db.test.update({name: 'william'}, {$set: {age: 20}}, {upsert: true})`                                                                          |
+|   `multi`   | 对所有数据进行复数操作                                            | `db.test.update({}, {$set: {interest: []}}, {multi: true})`                                                                                     |
 
 其中，`upsert`和`multi`可以简写，在`update`中第三个参数为`upsert`，第四个参数为`multi`，即
 
@@ -149,26 +151,26 @@ db.test.find(
 
 **多重条件筛选**
 
-| 名称   | 作用                           | 示例                                                         |
-| ------ | ------------------------------ | ------------------------------------------------------------ |
-| `$in`  | 查询一键多值的数据             | `db.test.find({age: {$in: [18, 28]}})`找出年龄18和28的数据   |
-| `$nin` | `$in`的取反操作                | `db.test.find({age: {$nin: [18, 28]}})`找出年龄不为18或28的数据 |
-| `$not` | 找出不为某项值得数据           | `db.test.find({age: {$not: {$lte: 30, $gte: 20}}})`年龄大于30或小于20的数据 |
-| `$or`  | 或者处理，整合查询条件做或逻辑 | `db.test.find({$or: [{age: {$lt: 20}}, {age: ${gt: 30}}]})`年龄大于30或小于20的数据 |
+| 名称   | 作用                           | 示例                                                                                 |
+| ------ | ------------------------------ | ------------------------------------------------------------------------------------ |
+| `$in`  | 查询一键多值的数据             | `db.test.find({age: {$in: [18, 28]}})`找出年龄18和28的数据                           |
+| `$nin` | `$in`的取反操作                | `db.test.find({age: {$nin: [18, 28]}})`找出年龄不为18或28的数据                      |
+| `$not` | 找出不为某项值得数据           | `db.test.find({age: {$not: {$lte: 30, $gte: 20}}})`年龄大于30或小于20的数据          |
+| `$or`  | 或者处理，整合查询条件做或逻辑 | `db.test.find({$or: [{age: {$lt: 20}}, {age: ${gt: 30}}]})`年龄大于30或小于20的数据  |
 | `$nor` | `$or`的取反操作                | `db.test.find({$nor: [{age: {$lte: 20}}, {age: ${gte: 30}}]})`大于20并且小于30的数据 |
-| `$and` | 与且处理，整合查询条件做与逻辑 | `db.test.find({$and: [{age: {$lt: 30}}, {age: {$gt: 20}}]})`大于20并且小于30的数据 |
-| `$not` | 获取查询条件之外的值           | `db.test.find({age: {$not: {$gte: 30, $lte: 20}}})`大于20并且小于30的数据 |
+| `$and` | 与且处理，整合查询条件做与逻辑 | `db.test.find({$and: [{age: {$lt: 30}}, {age: {$gt: 20}}]})`大于20并且小于30的数据   |
+| `$not` | 获取查询条件之外的值           | `db.test.find({age: {$not: {$gte: 30, $lte: 20}}})`大于20并且小于30的数据            |
 
 **数组查询**
 
-| 名称         | 作用                                 | 示例                                                         |
-| ------------ | ------------------------------------ | ------------------------------------------------------------ |
+| 名称         | 作用                                 | 示例                                                                                                                                |
+| ------------ | ------------------------------------ | ----------------------------------------------------------------------------------------------------------------------------------- |
 | 精确等值查询 | 会匹配所有相同项的数组               | `db.test.find({interest: ['画画','聚会']})`匹配爱好是画画和聚会的用户<br />`db.test.find({interest: ['画画']})`匹配只喜欢画画的用户 |
-| 包含值查询   | 匹配数据数组中包含值的数据           | `db.test.find({intereste: '画画'})`匹配爱好中有画画的用户    |
-| `$all`       | 匹配数据数组中包含数组值的数据       | `db.test.find({interest: {$all: ['看书', '看电影']}})`匹配爱好中有看书**和**看电影的用户 |
-| `$in`        | 匹配数据数组中含有某些数组数据的数据 | `db.test.find({interest: {$in: ['看书', '看电影']}})`匹配爱好中有看书**或者**看电影的用户 |
-| `$size`      | 根据查询数组的长度返回结果           | `db.test.find({interest: {$size: 5}})`找出拥有5个爱好的用户  |
-| `$slice`     | 对显示选项的数组结果进行截取         | `db.test.find({}, {interest: {$slice: 2}})`显示前两项爱好<br />`db.test.find({}, {interest: {$slice: -1}})`显示最后一项爱好 |
+| 包含值查询   | 匹配数据数组中包含值的数据           | `db.test.find({intereste: '画画'})`匹配爱好中有画画的用户                                                                           |
+| `$all`       | 匹配数据数组中包含数组值的数据       | `db.test.find({interest: {$all: ['看书', '看电影']}})`匹配爱好中有看书**和**看电影的用户                                            |
+| `$in`        | 匹配数据数组中含有某些数组数据的数据 | `db.test.find({interest: {$in: ['看书', '看电影']}})`匹配爱好中有看书**或者**看电影的用户                                           |
+| `$size`      | 根据查询数组的长度返回结果           | `db.test.find({interest: {$size: 5}})`找出拥有5个爱好的用户                                                                         |
+| `$slice`     | 对显示选项的数组结果进行截取         | `db.test.find({}, {interest: {$slice: 2}})`显示前两项爱好<br />`db.test.find({}, {interest: {$slice: -1}})`显示最后一项爱好         |
 
 **find后续方法**
 
